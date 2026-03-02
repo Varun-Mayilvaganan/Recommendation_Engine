@@ -1,0 +1,400 @@
+Perfect.
+
+Below is your **exact step-by-step Cursor prompt plan**.
+
+You will paste these into Cursor sequentially.
+Each block builds one production-grade component.
+
+Do NOT skip steps.
+
+---
+
+# 🚀 MASTER BUILD PLAN FOR CURSOR
+
+We will build in 10 controlled stages.
+
+---
+
+# 🧱 STAGE 1 — PROJECT SCAFFOLD
+
+Paste this into Cursor:
+
+---
+
+### 🔹 Cursor Prompt — Project Setup
+
+```
+Create a production-grade Python project for an SHL Assessment Recommendation System.
+
+Tech stack:
+- FastAPI backend
+- Streamlit frontend
+- Sentence Transformers
+- FAISS
+- rank_bm25
+- Gemini API integration
+- Pandas
+- BeautifulSoup for scraping
+- Uvicorn
+- Pydantic
+
+Project structure:
+
+/shl_recommendation_system
+    /data
+    /scraper
+    /retrieval
+    /reranker
+    /evaluation
+    /api
+    /frontend
+    /utils
+    main.py
+    requirements.txt
+    README.md
+
+Create all folders and empty module files.
+Write requirements.txt with all necessary dependencies.
+Ensure code is modular and clean.
+```
+
+---
+
+# 🕷 STAGE 2 — SHL SCRAPER (MANDATORY REQUIREMENT)
+
+### 🔹 Cursor Prompt — Scraping Module
+
+```
+Build a robust web scraper to crawl SHL Individual Test Solutions from:
+https://www.shl.com/solutions/products/product-catalog/
+
+Requirements:
+- Ignore “Pre-packaged Job Solutions”
+- Extract at least 377 Individual Test Solutions
+- For each assessment extract:
+    - Assessment name
+    - URL
+    - Description
+    - Test Type (K or P)
+    - Duration
+    - Job Level (if present)
+    - Any other visible metadata
+
+Use:
+- requests
+- BeautifulSoup
+- Pagination handling
+- Retry mechanism
+
+Store results in:
+data/shl_catalog.json
+
+Ensure:
+- Cleaned text (strip HTML)
+- No duplicates
+- Proper logging
+- Count validation (print total items scraped)
+```
+
+---
+
+# 🧠 STAGE 3 — QUERY UNDERSTANDING ENGINE
+
+### 🔹 Cursor Prompt — Gemini Extraction
+
+```
+Create a Query Understanding module using Gemini API.
+
+Input:
+Natural language job query
+
+Output:
+Structured JSON with:
+{
+    "technical_skills": [],
+    "soft_skills": [],
+    "seniority": "",
+    "domains": []
+}
+
+Use Gemini Flash model.
+Create robust prompt engineering:
+- Extract both technical and behavioral components.
+- Infer seniority from language if possible.
+- Return strict JSON.
+
+Add error handling for malformed responses.
+```
+
+---
+
+# 🔎 STAGE 4 — EMBEDDING INDEX
+
+### 🔹 Cursor Prompt — Dense Retrieval
+
+```
+Create embedding module:
+
+- Use sentence-transformers (all-MiniLM-L6-v2 initially)
+- Embed all assessment descriptions
+- Store embeddings in FAISS index
+- Persist index locally
+- Save metadata mapping (id → assessment)
+
+Create function:
+retrieve_dense(query, top_k=50)
+Return:
+[
+    {id, score}
+]
+```
+
+---
+
+# 📚 STAGE 5 — BM25 SPARSE RETRIEVAL
+
+### 🔹 Cursor Prompt — BM25 Module
+
+```
+Implement BM25 retrieval using rank_bm25.
+
+- Tokenize cleaned assessment descriptions
+- Build BM25 index
+- Function:
+retrieve_bm25(query, top_k=50)
+
+Return:
+[
+    {id, score}
+]
+```
+
+---
+
+# 🎯 STAGE 6 — STRUCTURED SKILL MATCHING
+
+### 🔹 Cursor Prompt — Skill Overlap Engine
+
+```
+Implement structured skill matching:
+
+Input:
+- Structured query JSON
+- SHL catalog data
+
+Compute:
+- Technical skill overlap
+- Soft skill alignment
+- Seniority match score
+
+Return:
+{
+    id,
+    skill_overlap_score,
+    seniority_score
+}
+```
+
+---
+
+# ⚖️ STAGE 7 — SCORE FUSION + BALANCED RERANKING
+
+This is your secret weapon.
+
+### 🔹 Cursor Prompt — Hybrid Re-Ranker
+
+```
+Create hybrid scoring system:
+
+Combine:
+0.4 * dense_score
+0.3 * bm25_score
+0.2 * skill_overlap_score
+0.1 * seniority_score
+
+Normalize all scores before fusion.
+
+After ranking:
+Implement balanced selection logic:
+- If query contains both technical + soft skills:
+    Ensure at least 40% K tests
+    Ensure at least 40% P tests
+
+Return top 10 balanced recommendations.
+```
+
+This directly satisfies SHL’s “Recommendation Balance” requirement.
+
+---
+
+# 📊 STAGE 8 — EVALUATION PIPELINE
+
+### 🔹 Cursor Prompt — Recall Evaluation
+
+```
+Implement evaluation module:
+
+Load:
+Gen_AI Dataset.xlsx
+
+Split:
+- Train labeled set
+- Test unlabeled set
+
+Compute:
+Recall@10 for each query
+Mean Recall@10 across all queries
+
+Create function:
+evaluate(model)
+
+Print:
+Per-query recall
+Mean Recall@10
+
+Allow weight tuning experiments.
+```
+
+---
+
+# 🚀 STAGE 9 — FASTAPI ENDPOINTS
+
+### 🔹 Cursor Prompt — API
+
+```
+Build FastAPI application.
+
+Endpoints:
+
+GET /health
+Returns:
+{"status": "ok"}
+
+POST /recommend
+Input:
+{
+    "query": "text"
+}
+
+Output:
+{
+    "recommendations": [
+        {
+            "assessment_name": "...",
+            "assessment_url": "..."
+        }
+    ]
+}
+
+Ensure:
+- Proper HTTP status codes
+- JSON format exactly matching spec
+- At most 10 recommendations
+- Minimum 1 recommendation
+```
+
+---
+
+# 🌐 STAGE 10 — STREAMLIT FRONTEND
+
+### 🔹 Cursor Prompt — Web UI
+
+```
+Build Streamlit frontend:
+
+Features:
+- Input text box
+- Optional JD URL input
+- Display results in table
+- Show test type
+- Show ranking score
+- Highlight K vs P visually
+
+Call FastAPI backend.
+```
+
+---
+
+# 🏆 STAGE 11 — FINAL PREDICTION CSV GENERATION
+
+### 🔹 Cursor Prompt — Submission CSV
+
+```
+Generate predictions on unlabeled test set.
+
+For each query:
+Return up to 10 assessment URLs.
+
+Output CSV format EXACTLY as:
+
+Query,Assessment_url
+Query1,url1
+Query1,url2
+...
+
+Save file:
+submission.csv
+
+Ensure no formatting deviations.
+```
+
+---
+
+# 📈 STAGE 12 — OPTIMIZATION LOOP
+
+After baseline run:
+
+Ask Cursor:
+
+```
+Run evaluation.
+Print Mean Recall@10.
+Suggest weight adjustments to improve recall.
+Test alternative embedding model.
+Compare results.
+```
+
+Document performance improvement in 2-page PDF.
+
+---
+
+# 💎 FINAL DIFFERENTIATOR STRATEGY
+
+After full system works, add:
+
+```
+Add diversification reranking using MMR (Maximal Marginal Relevance).
+Prevent similar assessments clustering.
+Improve recall and balance.
+```
+
+That will outperform most competitors.
+
+---
+
+# 🧠 WHY THIS PLAN WINS
+
+This satisfies every evaluation criteria:
+
+✔ Scraping done
+✔ Modular pipeline
+✔ LLM integration
+✔ Retrieval augmented generation
+✔ Balanced recommendation
+✔ Evaluation implemented
+✔ API compliant
+✔ Submission format correct
+✔ Optimized for Recall@10
+
+---
+
+If you want next:
+
+I can give you:
+
+1. The exact Gemini prompt (production optimized)
+2. The exact evaluation math implementation
+3. The perfect 2-page submission document template
+4. Advanced recall boosting techniques
+
+Tell me which one you want.
