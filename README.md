@@ -1,6 +1,4 @@
-# SHL Assessment Recommendation System
-
-**Generative AI Assignment – SHL AI Intern**
+# Assessment Recommendation System
 
 A production-grade recommendation system that suggests relevant SHL Individual Test Solutions given a natural language job query or job description URL.
 
