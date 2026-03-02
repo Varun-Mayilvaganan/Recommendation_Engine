@@ -174,18 +174,3 @@ Output: `Query`, `Assessment_url` (one row per query–URL pair, up to 10 URLs p
 ```
 
 ---
-
-## 7. Evaluation
-
-```bash
-cd shl_recommendation_system
-python main.py evaluate
-```
-
-Computes Mean Recall@10 on the labeled train set.
-
----
-
-## 8. License & Contact
-
-Developed for SHL AI Intern – Generative AI assignment.
