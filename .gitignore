@@ -38,11 +38,7 @@ yarn-error.log*
 *.sqlite3
 recommendation_engine.db
 
-# Generated data (reproducible via CLI)
-shl_recommendation_system/data/faiss_index.bin
-shl_recommendation_system/data/faiss_metadata.json
-shl_recommendation_system/data/bm25_index.pkl
-shl_recommendation_system/data/shl_catalog.json
+
 
 # IDE & editors
 .idea/
@@ -65,7 +61,6 @@ Thumbs.db
 
 # Exclude from repo (internal / redundant)
 .env.example
-Gen_AI Dataset.xlsx
 SHL AI Intern RE Generative AI assignment.pdf
 shl-logo-500x500-v2.png
 ASSIGNMENT_CHECKLIST.md
