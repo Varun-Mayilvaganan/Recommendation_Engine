@@ -6,7 +6,7 @@ Hiring managers and recruiters often struggle to find the right SHL assessments 
 
 ## Solution Overview
 
-I built a hybrid retrieval pipeline that combines several techniques. First, an LLM (Gemini) parses the query to extract technical skills, soft skills, seniority, and domains. That structured output feeds into dense retrieval (FAISS with sentence-transformers) for semantic similarity and sparse retrieval (BM25) for lexical overlap. I then compute skill overlap scores against assessment metadata, fuse everything with tuned weights (0.4 dense, 0.3 BM25, 0.2 skill, 0.1 seniority), and apply balanced K/P selection so that when a query spans both technical and behavioral skills, we don’t over-represent one type. Finally, MMR diversification reduces redundancy in the top results.
+I built a hybrid retrieval pipeline that combines several techniques. First, an LLM (Gemini) parses the query to extract technical skills, soft skills, seniority, and domains. That structured output feeds into dense retrieval (FAISS with sentence-transformers) for semantic similarity and sparse retrieval (BM25) for lexical overlap. I then compute skill overlap scores against assessment metadata, fuse everything with tuned weights (0.4 dense, 0.3 BM25, 0.2 skill, 0.1 seniority), and apply balanced K/P selection so that when a query spans both technical and behavioral skills, we don't over-represent one type. Finally, MMR diversification reduces redundancy in the top results.
 
 ## Architecture
 
@@ -18,9 +18,9 @@ I built a hybrid retrieval pipeline that combines several techniques. First, an 
 
 ## Design Decisions
 
-**Hybrid retrieval.** Dense embeddings capture semantic similarity (e.g., “collaboration” and “teamwork”), while BM25 preserves exact keyword matches (e.g., “Python”, “SQL”). Skill overlap adds precision by using structured metadata like test_type and job_level.
+**Hybrid retrieval.** Dense embeddings capture semantic similarity (e.g., "collaboration" and "teamwork"), while BM25 preserves exact keyword matches (e.g., "Python", "SQL"). Skill overlap adds precision by using structured metadata like test_type and job_level.
 
-**Balanced K/P selection.** Queries like “Java developer who collaborates” mix technical (K) and behavioral (P) skills. Without balancing, results skew heavily toward K-only assessments. I enforce at least 40% of each when both types are present in the query.
+**Balanced K/P selection.** Queries like "Java developer who collaborates" mix technical (K) and behavioral (P) skills. Without balancing, results skew heavily toward K-only assessments. I enforce at least 40% of each when both types are present in the query.
 
 **MMR.** Maximal Marginal Relevance reduces redundancy—e.g., multiple nearly identical Java assessments—and improves diversity in the final list.
 
@@ -28,7 +28,7 @@ I built a hybrid retrieval pipeline that combines several techniques. First, an 
 
 ## Optimization & Performance
 
-Starting from a keyword-only baseline (no LLM), mean Recall@10 was around 0.35–0.38. Adding LLM query understanding improved skill extraction and overlap. I fixed the JavaScript vs Java ordering in the keyword fallback so “javascript” is checked before “java,” which corrected some ranking issues. Balanced K/P and fusion tuning further improved results.
+Starting from a keyword-only baseline (no LLM), mean Recall@10 was around 0.35–0.38. Adding LLM query understanding improved skill extraction and overlap. I fixed the JavaScript vs Java ordering in the keyword fallback so "javascript" is checked before "java," which corrected some ranking issues. Balanced K/P and fusion tuning further improved results.
 
 Final mean Recall@10 on the train set is 0.4133. Some per-query examples: Java developers + collaboration (0.60), Sales graduates (0.56), COO China (0.50), Senior Data Analyst SQL/Python (0.70), ICICI Admin (0.67).
 
@@ -41,7 +41,7 @@ The primary approach is paginated HTTP GET to the SHL catalog (`?type=1&start=0,
 - **submission.csv** – Test-set predictions (`Query`, `Assessment_url`, one row per query–URL pair), at project root and in `shl_recommendation_system/`
 - **API** – `POST /recommend` with JSON request/response as described in the README
 - **Frontend** – React app with query input, optional JD URL, and filters
-- **Requirements mapping** – `REQUIREMENTS.md` maps assignment requirements to the implementation
+- **Requirements mapping** – `doc/REQUIREMENTS.md` maps assignment requirements to the implementation
 
 ## How to Run
 

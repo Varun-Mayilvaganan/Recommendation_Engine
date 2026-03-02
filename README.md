@@ -33,8 +33,9 @@ Recommendation_Engine/
 ├── frontend/               # React (Vite + TypeScript)
 ├── run.py                  # Backend entry (port 8080)
 ├── requirements.txt
-├── APPROACH_DOCUMENT.md     # Methodology & design decisions
-├── REQUIREMENTS.md         # Assignment requirements mapping
+├── doc/                    # Documentation
+│   ├── APPROACH_DOCUMENT.md   # Methodology & design decisions
+│   └── REQUIREMENTS.md       # Assignment requirements mapping
 └── submission.csv          # Test-set predictions (generated)
 ```
 
@@ -122,8 +123,8 @@ UI: http://localhost:5173
 |----------|----------|-------------|
 | **submission.csv** | Root & `shl_recommendation_system/submission.csv` | Test-set predictions: `Query`, `Assessment_url` |
 | **API** | `POST /recommend` | Request: `{query, top_k?, job_family?, ...}` → `{data: {recommendations: [...]}}` |
-| **Approach Document** | `APPROACH_DOCUMENT.md` | Methodology, architecture, optimization, limitations |
-| **Requirements Mapping** | `REQUIREMENTS.md` | Assignment requirements → implementation mapping |
+| **Approach Document** | `doc/APPROACH_DOCUMENT.md` | Methodology, architecture, optimization, limitations |
+| **Requirements Mapping** | `doc/REQUIREMENTS.md` | Assignment requirements → implementation mapping |
 | **Submission Package** | `SUBMISSION_PACKAGE.md` | Checklist and file list for submission |
 
 ### Generate submission.csv
